@@ -96,13 +96,15 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      this._setSliderWidth();
-      this._initDots();
-      this._initSlider();
-      if (this.autoPlay) {
-        this._play();
-      }
-    }, 50);
+      this.$nextTick(() => {
+        this._setSliderWidth();
+        this._initDots();
+        this._initSlider();
+        if (this.autoPlay) {
+          this._play();
+        }
+      });
+    }, 500);
     window.addEventListener("resize", () => {
       if (!this.slider) {
         return;
@@ -112,7 +114,7 @@ export default {
     });
   },
   destroyed() {
-      clearTimeout(this.timer)
+    clearTimeout(this.timer);
   }
 };
 </script>

@@ -1,39 +1,43 @@
 <template>
   <div class="recommend">
-    <div class="recommend-content">
-      <div class="slider-wrapper">
-        <slider>
-          <div v-for="(item,index) in recommends" :key="index" class="slider-item">
-            <a :href="item.linkUrl">
-              <img class="needsclick" :src="item.picUrl" />
-            </a>
-          </div>
-        </slider>
-      </div>
+    <scroll class="recommend-content" :data="discList">
+      <div>
+        <div class="slider-wrapper">
+          <slider>
+            <div v-for="(item,index) in recommends" :key="index" class="slider-item">
+              <a :href="item.linkUrl">
+                <img class="needsclick" :src="item.picUrl" />
+              </a>
+            </div>
+          </slider>
+        </div>
 
-      <div class="recommend-list">
-        <h1 class="list-title">热门歌单推荐</h1>
-        <ul>
-          <li v-for="(item,index) in discList" :key="index" class="item">
-            <div class="icon">
-              <img :src="item.imgurl" alt width="60" height="60" />
-            </div>
-            <div class="text">
-              <h2 class="name">{{item.creator.name}}</h2>
-              <p class="desc">{{item.dissname}}</p>
-            </div>
-          </li>
-        </ul>
+        <div class="recommend-list">
+          <h1 class="list-title">热门歌单推荐</h1>
+          <ul>
+            <li v-for="(item,index) in discList" :key="index" class="item">
+             
+              <div class="icon">
+                <img :src="item.imgurl" alt width="60" height="60" />
+              </div>
+              <div class="text">
+                <h2 class="name">{{item.creator.name}}</h2>
+                <p class="desc">{{item.dissname}}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
+    </scroll>
   </div>
 </template>
 
 <script>
 import { getRecommend, getDiscList } from "@/api/recommend";
 import Slider from "@/base/slider";
+import Scroll from "@/base/scroll";
 export default {
-  components: { Slider },
+  components: { Slider, Scroll },
   data() {
     return {
       recommends: [],
@@ -45,13 +49,13 @@ export default {
       getRecommend().then(res => {
         if (res.code === 0) {
           this.recommends = res.data.slider;
-          console.log(this.recommends);
         }
       });
     },
     _getDiscList() {
       getDiscList().then(res => {
         if (res.code === 0) {
+          //  console.log(this.discList);
           this.discList = res.data.list;
         }
       });

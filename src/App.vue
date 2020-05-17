@@ -2,10 +2,10 @@
   <div id="app">
     <m-header></m-header>
     <tab></tab>
-    <router-view v-if="!$route.meta.keepAlive"></router-view>
     <keep-alive>
       <router-view v-if="$route.meta.keepAlive"></router-view>
     </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive"></router-view>
   </div>
 </template>
 <script>
