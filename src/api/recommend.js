@@ -44,7 +44,7 @@ export function getDiscList() {
 }
 
 export function getSongList(disstid) {
-  const url = '/api/getSongList'
+  const url = 'http://localhost:3002/api/getSongList'
   const data = Object.assign({}, commonParams, {
     uin: 0,
     format: 'json',

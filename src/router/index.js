@@ -12,11 +12,19 @@ const routes = [
   {
     path: '/recommend',
     component: () => import('../views/recommend/index.vue'),
-    meta:{keepAlive:true}
+    meta:{keepAlive:true},
+    children: [
+      {
+        props: true,
+        path:':id',
+        component: () => import ('../views/recommend/Disc.vue')
+      }
+    ]
   },
   {
     path: '/singer',
-    component: () => import('../views/singer/index.vue')
+    component: () => import('../views/singer/index.vue'),
+    meta:{keepAlive:true},
   },
   {
     path: '/rank',
@@ -37,7 +45,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  // mode: 'history',
   base: process.env.BASE_URL,
   routes
 })

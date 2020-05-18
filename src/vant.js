@@ -16,3 +16,9 @@ Vue.use(GridItem);
 import { Image as VanImage } from 'vant';
 
 Vue.use(VanImage);
+
+import { Loading } from 'vant';
+Vue.use(Loading);
+
+import { Lazyload } from 'vant';
+Vue.use(Lazyload);

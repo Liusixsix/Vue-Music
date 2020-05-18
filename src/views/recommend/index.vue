@@ -15,10 +15,10 @@
         <div class="recommend-list">
           <h1 class="list-title">热门歌单推荐</h1>
           <ul>
-            <li v-for="(item,index) in discList" :key="index" class="item">
+            <li v-for="(item,index) in discList" :key="index" class="item"  @click="selectItem(item)"> 
              
               <div class="icon">
-                <img :src="item.imgurl" alt width="60" height="60" />
+                <img :src="item.imgurl" alt width="60" height="60" v-lazy="item.imgurl" />
               </div>
               <div class="text">
                 <h2 class="name">{{item.creator.name}}</h2>
@@ -27,8 +27,12 @@
             </li>
           </ul>
         </div>
+           <div class="loading-container" v-if="!discList.length">
+              <van-loading /> 
+           </div>
       </div>
     </scroll>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -59,6 +63,11 @@ export default {
           this.discList = res.data.list;
         }
       });
+    },
+    selectItem(item){
+      this.$router.push({
+        path:`/recommend/${item.dissid}`
+      })
     }
   },
 
@@ -127,5 +136,13 @@ export default {
       }
     }
   }
+
+   .loading-container {
+      position: absolute;
+      width: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      text-align: center;
+    }
 }
 </style>

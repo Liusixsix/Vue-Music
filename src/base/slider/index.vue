@@ -8,7 +8,7 @@
       <span
         class="dot"
         v-for="(item, index) in dots"
-        :key="index"
+        :key="index" 
         :class="{active: currentPageIndex === index}"
       ></span>
     </div>
@@ -104,7 +104,7 @@ export default {
           this._play();
         }
       });
-    }, 500);
+    }, 200);
     window.addEventListener("resize", () => {
       if (!this.slider) {
         return;
