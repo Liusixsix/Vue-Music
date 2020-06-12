@@ -1,6 +1,6 @@
 <template>
-  <div class="recommend">
-    <scroll class="recommend-content" :data="discList">
+  <div class="recommend" ref="recommend">
+    <scroll class="recommend-content" :data="discList" ref="scroll">
       <div>
         <div class="slider-wrapper">
           <slider>
@@ -15,21 +15,25 @@
         <div class="recommend-list">
           <h1 class="list-title">热门歌单推荐</h1>
           <ul>
-            <li v-for="(item,index) in discList" :key="index" class="item"  @click="selectItem(item)"> 
-             
+            <li
+              v-for="(item,index) in discList"
+              :key="index"
+              class="item"
+              @click="selectItem(item)"
+            >
               <div class="icon">
-                <img :src="item.imgurl" alt width="60" height="60" v-lazy="item.imgurl" />
+                <img :src="item.coverImgUrl" alt width="60" height="60" v-lazy="item.coverImgUrl" />
               </div>
               <div class="text">
-                <h2 class="name">{{item.creator.name}}</h2>
-                <p class="desc">{{item.dissname}}</p>
+                <h2 class="name">{{item.name}}</h2>
+                <p class="desc">{{item.description}}</p>
               </div>
             </li>
           </ul>
+          <div class="loading-container" v-if="!discList.length">
+            <van-loading />
+          </div>
         </div>
-           <div class="loading-container" v-if="!discList.length">
-              <van-loading /> 
-           </div>
       </div>
     </scroll>
     <router-view></router-view>
@@ -37,11 +41,16 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 import { getRecommend, getDiscList } from "@/api/recommend";
+import { playlistMixin } from '@/utils/mixin'
+import Singer from '@/utils/Singer'
 import Slider from "@/base/slider";
 import Scroll from "@/base/scroll";
+
 export default {
   components: { Slider, Scroll },
+  mixins: [playlistMixin],
   data() {
     return {
       recommends: [],
@@ -49,6 +58,14 @@ export default {
     };
   },
   methods: {
+    ...mapMutations({
+      setSinger: "SET_SINGER"
+    }),
+    handlePlaylist(playlist){
+       const bottom = playlist.length > 0 ? "60px" : "";
+       this.$refs.recommend.style.bottom = bottom; // 底部播放器适配
+      this.$refs.scroll.refresh(); // 强制 scroll 重新计算
+    },
     _getRecommend() {
       getRecommend().then(res => {
         if (res.code === 0) {
@@ -58,16 +75,23 @@ export default {
     },
     _getDiscList() {
       getDiscList().then(res => {
-        if (res.code === 0) {
-          //  console.log(this.discList);
-          this.discList = res.data.list;
+        if (res.code === 200) {
+          this.discList = res.playlists;
         }
       });
     },
-    selectItem(item){
-      this.$router.push({
-        path:`/recommend/${item.dissid}`
+    selectItem(item) {
+      // console.log(item)
+      const singer = new Singer({
+        id:item.id,
+        name:item.name,
+        picUrl:item.coverImgUrl
       })
+      // console.log(singer)
+      this.setSinger(singer);
+      this.$router.push({
+        path: `/recommend/${item.id}`
+      });
     }
   },
 
@@ -128,8 +152,10 @@ export default {
           .name {
             margin-bottom: 10px;
             color: $color-text;
+            @extend .no-wrap;
           }
           .desc {
+            @extend .no-wrap;
             color: $color-text-d;
           }
         }
@@ -137,12 +163,12 @@ export default {
     }
   }
 
-   .loading-container {
-      position: absolute;
-      width: 100%;
-      top: 50%;
-      transform: translateY(-50%);
-      text-align: center;
-    }
+  .loading-container {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+  }
 }
 </style>

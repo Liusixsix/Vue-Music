@@ -11,8 +11,13 @@
       <li v-for="(group,index) in data" :key="index" class="list-group" ref="listGroup">
         <h2 class="list-group-title">{{group.title}}</h2>
         <ul>
-          <li v-for="(item,index) in group.items" :key="index" class="list-group-item">
-            <img alt class="avatar" v-lazy="item.avatar" />
+          <li
+            v-for="(item,index) in group.items"
+            :key="index"
+            class="list-group-item"
+            @click="selectItem(item)"
+          >
+            <img alt class="avatar" v-lazy="item.picUrl" />
             <span class="name">{{item.name}}</span>
           </li>
         </ul>
@@ -36,6 +41,10 @@
     </div>
     <div class="list-fixed" ref="fixedTitle" v-show="fiexdTitle">
       <div class="fixed-title">{{fiexdTitle}}</div>
+    </div>
+
+    <div class="loading-container" v-if="!data.length">
+      <van-loading />
     </div>
   </scroll>
 </template>
@@ -63,7 +72,7 @@ export default {
     };
   },
   watch: {
-    data() {
+    data(list) {
       setTimeout(() => {
         this._calculateHeight();
       }, 20);
@@ -86,6 +95,7 @@ export default {
       this.currentIndex = listHeight.length - 2;
       //   console.log(this.currentIndex);
     },
+   
     diff(newVal) {
       const fixedTop =
         newVal > 0 && newVal < TITLE_HEIGHT ? newVal - TITLE_HEIGHT : 0;
@@ -111,6 +121,9 @@ export default {
     }
   },
   methods: {
+     selectItem(item) {
+      this.$emit("select", item);
+    },
     getData(el, name, val) {
       const prefix = "data-";
       name = prefix + name;
@@ -233,6 +246,14 @@ export default {
       font-size: $font-size-small;
       color: $color-text-l;
     }
+  }
+
+  .loading-container {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
   }
 }
 </style>

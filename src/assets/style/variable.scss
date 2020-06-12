@@ -18,3 +18,9 @@ $font-size-medium : 14px;
 $font-size-medium-x : 16px;
 $font-size-large : 18px;
 $font-size-large-x : 22px;
+
+.no-wrap{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}

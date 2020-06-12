@@ -20,25 +20,25 @@ export function getRecommend() {
   return jsonp(url, data, options)
 }
 
+// 歌单推荐
 export function getDiscList() {
-  // const url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
-  const url = 'http://localhost:3002/api/getDiscList' // 调用自定义的接口
-  const data = Object.assign({}, commonParams, {
-    platform: 'yqq',
-    hostUin: 0,
-    sin: 0,
-    ein: 29,
-    sortId: 5,
-    needNewCode: 0,
-    categoryId: 10000000,
-    rnd: Math.random(),
-    format: 'json' // 使用的时axios,所以format使用的是json,不是jsonp
-  })
+  const url = 'http://localhost:3000/top/playlist'
   return axios.get(url, {
-    params: data
   }).then((res) => {
     return Promise.resolve(res.data)
-  }).catch(e=>{
+  }).catch(e => {
+    console.log(e.message)
+  })
+}
+
+// 获取歌单详情
+export function getDisdetail(id) {
+  const url = 'http://localhost:3000/playlist/detail'
+  return axios.get(url, {
+    params: { id }
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  }).catch(e => {
     console.log(e.message)
   })
 }

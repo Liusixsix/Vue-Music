@@ -12,27 +12,51 @@ const routes = [
   {
     path: '/recommend',
     component: () => import('../views/recommend/index.vue'),
-    meta:{keepAlive:true},
+    meta: { keepAlive: true },
     children: [
       {
         props: true,
-        path:':id',
-        component: () => import ('../views/recommend/Disc.vue')
+        path: ':id',
+        component: () => import('../views/recommend/Disc.vue')
       }
     ]
   },
   {
     path: '/singer',
     component: () => import('../views/singer/index.vue'),
-    meta:{keepAlive:true},
+    meta: { keepAlive: true },
+    children: [
+      {
+        props: true,
+        path: ':id',
+        component: () => import('../views/singer/Detail.vue'),
+        meta: { keepAlive: true },
+      }
+    ]
   },
   {
     path: '/rank',
-    component: () => import('../views/rank/index.vue')
+    component: () => import('../views/rank/index.vue'),
+    children: [
+      {
+        props: true,
+        path: ':id',
+        component: () => import('../views/rank/Detail.vue'),
+        meta: { keepAlive: true },
+      }
+    ]
   },
   {
     path: '/search',
-    component: () => import('../views/search/index.vue')
+    component: () => import('../views/search/index.vue'),
+    children: [
+      {
+        props: true,
+        path: ':id',
+        component: () => import('../views/singer/Detail.vue'),
+        meta: { keepAlive: true },
+      }
+    ]
   },
   {
     path: '/about',
