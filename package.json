@@ -17,7 +17,7 @@
     "fastclick": "^1.0.6",
     "jsonp": "^0.2.1",
     "lyric-parser": "^1.0.1",
-    "postcss": "^7.0.30",
+    "postcss": "^8.2.10",
     "postcss-px2rem": "^0.3.0",
     "vant": "^2.5.9",
     "vue": "^2.6.11",
